@@ -8,7 +8,7 @@
 
 // Graphics lib
 #include <GL/glew.h>
-#include <GLFW/glfw3.h>
+#include <SDL2/SDL.h>
 
 // Math
 #include "la.h"
@@ -34,6 +34,27 @@ static bool ErrorLog(const char* function, const char* file, int line)
         return false;
     }
     return true;
+}
+
+// SDL Error checker
+static int sdl_check(int result)
+{
+	if (result < 0)
+	{
+		fprintf(stderr, "ERROR: %s\n", SDL_GetError());
+		exit(1);
+	}
+	return result;
+}
+
+static void* sdl_check_ptr(void* result)
+{
+	if (!result)
+	{
+		fprintf(stderr, "PTR ERROR: %s\n", SDL_GetError());
+		exit(1);
+	}
+	return result;
 }
 
 #endif

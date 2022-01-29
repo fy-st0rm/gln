@@ -4,5 +4,6 @@
 #include "window.h"
 #include "renderer.h"
 #include "shader.h"
+#include "object.h"
 
 #endif

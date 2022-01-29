@@ -6,23 +6,18 @@ GLNWindow* gln_create_window(const char* title, int w, int h)
 	window->width = w;
 	window->height = h;
 
-	if (!glfwInit())
-	{
-		fprintf(stderr, "[Error]: Failed to initialize glfw.\n");
-		exit(1);
-	}
-	
-	// Creating glfw window hints 
-	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
-	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
-	glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
+	sdl_check(SDL_Init(SDL_INIT_EVERYTHING));
 
 	// Creating the actual window
 	// TODO: Handle the window resizalbe 
-	window->window = glfwCreateWindow(w, h, title, NULL, NULL);
+	window->window = sdl_check_ptr(SDL_CreateWindow(title, SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, w, h, SDL_WINDOW_OPENGL));
 
-	glfwMakeContextCurrent(window->window);
-	glfwSwapInterval(1);
+	// Setting some attributes
+	SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 3);
+	SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 3);
+   	SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, SDL_GL_CONTEXT_PROFILE_CORE);
+	
+	sdl_check_ptr(SDL_GL_CreateContext(window->window));
 
 	if (glewInit() != GLEW_OK)
 	{
@@ -34,8 +29,9 @@ GLNWindow* gln_create_window(const char* title, int w, int h)
 
 void gln_destroy_window(GLNWindow* window)
 {
+	SDL_DestroyWindow(window->window);
 	free(window);
-	glfwTerminate();
+	SDL_Quit();
 }
 
 void gln_clear_window(GLNWindow* window, vec4f color)
@@ -44,13 +40,8 @@ void gln_clear_window(GLNWindow* window, vec4f color)
 	GLCall(glClear(GL_COLOR_BUFFER_BIT));
 }
 
-bool gln_window_running(GLNWindow* window)
-{
-	return !glfwWindowShouldClose(window->window);
-}
-
 void gln_update_window(GLNWindow* window)
 {
-	glfwSwapBuffers(window->window);
-	glfwPollEvents();
+	SDL_GL_SwapWindow(window->window);
 }
+
