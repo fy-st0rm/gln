@@ -5,5 +5,7 @@
 #include "renderer.h"
 #include "shader.h"
 #include "object.h"
+#include "dict.h"
+#include "texture.h"
 
 #endif

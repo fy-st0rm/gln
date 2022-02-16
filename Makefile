@@ -1,5 +1,5 @@
 CC = gcc
-SRC = *.c
+SRC = src/*.c
 OBJ = *.o
 OUT = libgln.a
 

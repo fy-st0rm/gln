@@ -1,4 +1,4 @@
-#include "shader.h"
+#include "../includes/shader.h"
 
 unsigned int compile_shader(unsigned int type, char* shader_src)
 {

@@ -7,6 +7,8 @@ typedef struct
 {
 	vec2f pos;
 	vec4f color;
+	vec2f tex_cord;
+	float tex_id;
 } Vertex;
 
 typedef struct
@@ -22,12 +24,16 @@ typedef struct
 	int max_buff_size;
 	int max_texture;
 
+	int white_texture;
+	int tex_len;
+
 	// Buffer IDs
 	unsigned int VAO, VBO, IBO;
 
 	// Buffer
 	int buff_idx;
 	float* quad_buffer;
+	unsigned int* texture_slots;
 
 } GLNRenderer;
 
@@ -37,7 +43,7 @@ void		 gln_init_renderer		(GLNRenderer* renderer);
 void		 gln_render_begin 		(GLNRenderer* renderer);
 void		 gln_render_end			(GLNRenderer* renderer);
 
-Quad*		 gln_create_quad		(float x, float y, float w, float h, vec4f color);
+Quad*		 gln_create_quad		(GLNRenderer* renderer, float x, float y, float w, float h, vec4f color, int tex_id);
 void		 gln_push_quad			(GLNRenderer* renderer, Quad* quad);
 
 #endif
