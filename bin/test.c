@@ -1,10 +1,8 @@
 #include "../includes/gln.h"
 
-//TODO: Fix the shader to use the given texture id
-
 // Writing shader
 char* vertex_shader = 
-	"#version 330 core\n"
+	"#version 460 core\n"
 	"layout(location = 0) in vec4 in_position;\n"
 	"layout(location = 1) in vec4 in_color;\n"
 	"layout(location = 2) in vec2 in_tex_cord;\n"
@@ -22,7 +20,7 @@ char* vertex_shader =
 	"}";
 
 char* fragment_shader = 
-	"#version 330 core\n"
+	"#version 460 core\n"
 	"layout(location = 0) out vec4 color;\n"
 	"\n"
 	"in vec4  out_color;\n"
@@ -34,7 +32,7 @@ char* fragment_shader =
 	"void main()\n"
 	"{\n"
 	"int index = int(out_tex_id);\n"
-	"color = texture(textures[1], out_tex_cord) * out_color;\n"
+	"color = texture(textures[index], out_tex_cord) * out_color;\n"
 	"}";
 
 
@@ -48,12 +46,14 @@ int main()
 
 	printf("Opengl Version: %s\n", glGetString(GL_VERSION));
 
+	// Generating samplers for the shader 
 	int samplers[renderer->max_texture];
 	for (int i = 0; i < renderer->max_texture; i++)
 	{
 		samplers[i] = i;
 	}
 
+	// Providing samplers to the shader
 	glUseProgram(shader);
 	int loc = glGetUniformLocation(shader, "textures");
 	GLCall(glUniform1iv(loc, renderer->max_texture, samplers));
@@ -65,7 +65,7 @@ int main()
 	vec4f color = { 1.0, 1.0, 1.0, 1.0 };
 	Object* obj = gln_create_object(renderer, pos, size, color, texture.id);
 
-	vec4f bg = { 1.0, 1.0, 1.0, 1.0 };
+	vec4f bg = { 1.0, 1.0, 0.0, 1.0 };
 	glViewport(0, 0, 800, 600);
 
 	bool running = true;
