@@ -43,7 +43,8 @@ void		 gln_init_renderer		(GLNRenderer* renderer);
 void		 gln_render_begin 		(GLNRenderer* renderer);
 void		 gln_render_end			(GLNRenderer* renderer);
 
-Quad*		 gln_create_quad		(GLNRenderer* renderer, float x, float y, float w, float h, vec4f color, int tex_id);
+Quad*		 gln_create_quad		(GLNRenderer* renderer, vec4f rect, vec4f color, vec4f tex_cord, int tex_id);
+void		 gln_destroy_quad		(Quad* quad);
 void		 gln_push_quad			(GLNRenderer* renderer, Quad* quad);
 
 #endif

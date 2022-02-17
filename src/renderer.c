@@ -113,15 +113,15 @@ void gln_render_end(GLNRenderer* renderer)
 	GLCall(glDrawElements(GL_TRIANGLES, renderer->buff_idx, GL_UNSIGNED_INT, NULL));
 }
 
-Quad* gln_create_quad (GLNRenderer* renderer, float x, float y, float w, float h, vec4f color, int tex_id)
+Quad* gln_create_quad (GLNRenderer* renderer, vec4f rect, vec4f color, vec4f tex_cord, int tex_id)
 {
-	int id = 0;
+	int id = -1;
 	for (int i = 0; i < renderer->tex_len; i++)
 	{
-		if (renderer->texture_slots[i] == id)
+		if (renderer->texture_slots[i] == tex_id)
 			id = i;
 	}
-	if (!id)
+	if (id == -1)
 	{
 		renderer->texture_slots[renderer->tex_len] = tex_id;
 		id = renderer->tex_len;
@@ -130,28 +130,28 @@ Quad* gln_create_quad (GLNRenderer* renderer, float x, float y, float w, float h
 
 	Quad* quad = malloc(sizeof(Quad));
 	
-	quad->v[0].pos.x = x;
-	quad->v[0].pos.y = y;
-	quad->v[1].pos.x = x + w;
-	quad->v[1].pos.y = y;
-	quad->v[2].pos.x = x + w;
-	quad->v[2].pos.y = y + h;
-	quad->v[3].pos.x = x;
-	quad->v[3].pos.y = y + h;
+	quad->v[0].pos.x = rect.x;
+	quad->v[0].pos.y = rect.y;
+	quad->v[1].pos.x = rect.x + rect.z;
+	quad->v[1].pos.y = rect.y;
+	quad->v[2].pos.x = rect.x + rect.z;
+	quad->v[2].pos.y = rect.y + rect.w;
+	quad->v[3].pos.x = rect.x;
+	quad->v[3].pos.y = rect.y + rect.w;
 
 	quad->v[0].color = color;
 	quad->v[1].color = color;
 	quad->v[2].color = color;
 	quad->v[3].color = color;
 
-	quad->v[0].tex_cord.x = 0;
-	quad->v[0].tex_cord.y = 0;
-	quad->v[1].tex_cord.x = 1;
-	quad->v[1].tex_cord.y = 0;
-	quad->v[2].tex_cord.x = 1;
-	quad->v[2].tex_cord.y = 1;
-	quad->v[3].tex_cord.x = 0;
-	quad->v[3].tex_cord.y = 1;
+	quad->v[0].tex_cord.x = tex_cord.x;
+	quad->v[0].tex_cord.y = tex_cord.y;
+	quad->v[1].tex_cord.x = tex_cord.x + tex_cord.z;
+	quad->v[1].tex_cord.y = tex_cord.y;
+	quad->v[2].tex_cord.x = tex_cord.x + tex_cord.z;
+	quad->v[2].tex_cord.y = tex_cord.y + tex_cord.w;
+	quad->v[3].tex_cord.x = tex_cord.x;
+	quad->v[3].tex_cord.y = tex_cord.y + tex_cord.w;
 
 	quad->v[0].tex_id = id;
 	quad->v[1].tex_id = id;
@@ -159,6 +159,11 @@ Quad* gln_create_quad (GLNRenderer* renderer, float x, float y, float w, float h
 	quad->v[3].tex_id = id;
 
 	return quad;
+}
+
+void gln_destroy_quad(Quad* quad)
+{
+	free(quad);
 }
 
 void gln_push_quad(GLNRenderer* renderer, Quad* quad)

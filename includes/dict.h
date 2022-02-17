@@ -15,10 +15,11 @@ typedef struct
 {
 	Dict_item** items;
 	int size;
+	int len;
 } Dict;
 
 
-Dict* dict_new();
+Dict* dict_new(int size);
 void  dict_clean(Dict* dict);
 void  dict_print(Dict* dict);
 void  dict_insert(Dict* dict, void* key, void* value);

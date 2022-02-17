@@ -1,46 +1,12 @@
 #include "../includes/gln.h"
 
-// Writing shader
-char* vertex_shader = 
-	"#version 460 core\n"
-	"layout(location = 0) in vec4 in_position;\n"
-	"layout(location = 1) in vec4 in_color;\n"
-	"layout(location = 2) in vec2 in_tex_cord;\n"
-	"layout(location = 3) in float in_tex_id;\n"
-	"\n"
-	"out vec4 out_color;\n"
-	"out vec2 out_tex_cord;\n"
-	"out float out_tex_id;\n"
-	"void main()\n"
-	"{\n"
-	"out_color = in_color;\n"
-	"out_tex_cord = in_tex_cord;\n"
-	"out_tex_id = in_tex_id;\n"
-	"gl_Position = in_position;\n"
-	"}";
-
-char* fragment_shader = 
-	"#version 460 core\n"
-	"layout(location = 0) out vec4 color;\n"
-	"\n"
-	"in vec4  out_color;\n"
-	"in vec2  out_tex_cord;\n"
-	"in float out_tex_id;\n"
-	"\n"
-	"uniform sampler2D textures[32];\n"
-	"\n"
-	"void main()\n"
-	"{\n"
-	"int index = int(out_tex_id);\n"
-	"color = texture(textures[index], out_tex_cord) * out_color;\n"
-	"}";
-
+//TODO: FIX THE DICTIONARY AND COMPLETE ANIMATION SYSTEM
 
 int main()
 {
 	GLNWindow* window = gln_create_window("Window", 800, 600);
 	GLNRenderer* renderer = gln_create_renderer(1000);
-	unsigned int shader = create_shader(vertex_shader, fragment_shader);
+	unsigned int shader = gln_load_shader("shader.vert", "shader.frag");
 
 	gln_init_renderer(renderer);
 
@@ -58,20 +24,41 @@ int main()
 	int loc = glGetUniformLocation(shader, "textures");
 	GLCall(glUniform1iv(loc, renderer->max_texture, samplers));
 
-	GLNTexture texture = gln_load_texture(window, "ship.png");
-
-	vec2f pos  = { -1.0, -0.5 };
-	vec2f size = { 1.0, 1.0 };
-	vec4f color = { 1.0, 1.0, 1.0, 1.0 };
-	Object* obj = gln_create_object(renderer, pos, size, color, texture.id);
+	GLNTexture texture = gln_load_texture(window, "player.png");
+	int sprite_cnt = 6;
+	vec4f pos   = { -0.5, -0.5, 0.5, 1.0 };
+	vec4f color = {  1.0,  1.0, 1.0, 1.0 };
+	
+	vec4f walk0 = { 0.0 / sprite_cnt, 0.0, 1.0 / sprite_cnt, 1.0 };
+	vec4f walk1 = { 1.0 / sprite_cnt, 0.0, 1.0 / sprite_cnt, 1.0 };
+	vec4f walk2 = { 2.0 / sprite_cnt, 0.0, 1.0 / sprite_cnt, 1.0 };
+	vec4f walk3 = { 3.0 / sprite_cnt, 0.0, 1.0 / sprite_cnt, 1.0 };
+	vec4f walk4 = { 4.0 / sprite_cnt, 0.0, 1.0 / sprite_cnt, 1.0 };
+	vec4f walk5 = { 5.0 / sprite_cnt, 0.0, 1.0 / sprite_cnt, 1.0 };
+	Dict* anime = dict_new(sprite_cnt);
+	dict_insert(anime, (void*)1, (void*)&walk0); 
+	dict_insert(anime, (void*)2, (void*)&walk1); 
+	dict_insert(anime, (void*)3, (void*)&walk2); 
+	dict_insert(anime, (void*)4, (void*)&walk3); 
+	dict_insert(anime, (void*)5, (void*)&walk4); 
+	dict_insert(anime, (void*)6, (void*)&walk5); 
+	
+	float curr_frame = 1.0;
 
 	vec4f bg = { 1.0, 1.0, 0.0, 1.0 };
 	glViewport(0, 0, 800, 600);
+
+	// Frame stuff
+	int fps = 60;
+	int frame_delay = 1000 / fps;
+	Uint32 frame_start;
+	int frame_time;
 
 	bool running = true;
 	SDL_Event event;
 	while (running)
    	{
+		frame_start = SDL_GetTicks();
 		gln_clear_window(window, bg); 
 
 		if (SDL_PollEvent(&event))
@@ -79,12 +66,26 @@ int main()
 			if (event.type == SDL_QUIT) running = false;
 		}
 
-		gln_render_begin(renderer);
-		gln_render_object(renderer, obj);
-
 		glUseProgram(shader);
+
+		vec4f* tex = dict_get(anime, (int)curr_frame);
+		Quad* quad  = gln_create_quad(renderer, pos, color, *tex, texture.id);
+
+		gln_render_begin(renderer);
+		gln_push_quad(renderer, quad);
 		gln_render_end(renderer);
 		gln_update_window(window);
+
+		gln_destroy_quad(quad);
+
+		curr_frame += 0.01;
+		if (curr_frame > 7.0) curr_frame = 1.0;
+
+		frame_time = SDL_GetTicks() - frame_start;
+		if (frame_delay > frame_time)
+		{
+			SDL_Delay(frame_delay - frame_time);		
+		}
 	}
 
 	gln_destroy_renderer(renderer);

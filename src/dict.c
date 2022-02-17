@@ -1,10 +1,11 @@
 #include "../includes/dict.h"
 
-Dict* dict_new()
+Dict* dict_new(int size)
 {
 	Dict* dict  = (Dict*) malloc(sizeof(Dict));
-	dict->items = (Dict_item**) malloc(sizeof(Dict_item) * 2);
-	dict->size  = 0;
+	dict->items = (Dict_item**) malloc(sizeof(Dict_item) * size * 2);
+	dict->size  = size;
+	dict->len   = 0;
 	return dict;
 }
 
@@ -16,7 +17,7 @@ void dict_clean(Dict* dict)
 
 void dict_print(Dict* dict)
 {
-	for (int i = 0; i < dict->size; i++)
+	for (int i = 0; i < dict->len; i++)
 	{
 		Dict_item* item = dict->items[i];
 		printf("{%p : %p} ", item->key, item->value);
@@ -26,28 +27,26 @@ void dict_print(Dict* dict)
 
 void dict_insert(Dict* dict, void* key, void* value) 
 {
-	dict->size++;
-	Dict_item** new_items = (Dict_item**) malloc(sizeof(Dict_item) * dict->size * 2);
-	memcpy(new_items, dict->items, sizeof(dict->items));
-
-	new_items[dict->size - 1] = (Dict_item*) malloc(sizeof(Dict_item));
-	new_items[dict->size - 1]->key = key;
-	new_items[dict->size - 1]->value = value;
-
-	free(dict->items);
-	dict->items = new_items;
+	if (dict->len >= dict->size)
+	{
+		fprintf(stderr, "[ERROR]: Dictionary is full cannot add more element\n");
+		exit(1);
+	}
+	dict->items[dict->len] = (Dict_item*) malloc(sizeof(Dict_item));
+	dict->items[dict->len]->key = key;
+	dict->items[dict->len]->value = value;
+	dict->len++;
 }
 
 void dict_pop(Dict* dict, void* key)
 {
-	if (dict->size == 0)
+	if (dict->len == 0)
 	{
 		fprintf(stderr, "[ERROR]: Cannot pop empty dictionary.\n");
 		exit(1);
 	}
 
-	Dict_item** new_items = (Dict_item**) malloc(sizeof(Dict_item) * (dict->size - 1) * 2);
-	int prev_size = dict->size;
+	int prev_size = dict->len;
 
 	int index = 0;
 	for(int i = 0; i < prev_size; i++)
@@ -56,23 +55,20 @@ void dict_pop(Dict* dict, void* key)
 		printf("%d\n", index);
 		if (key != item->key)
 		{
-			new_items[index] = item;
+			dict->items[index] = item;
 			index++;
 		}
 		else
 		{
-			dict->size--;
+			dict->len--;
 		}
 	}
 
-	if (prev_size == dict->size)
+	if (prev_size == dict->len)
 	{
 		fprintf(stderr, "[ERROR]: Didnt found the required key.\n");
 		exit(1);
 	}
-
-	free(dict->items);
-	dict->items = new_items;
 }
 
 void* dict_get(Dict* dict, void* key)
