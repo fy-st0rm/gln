@@ -9,20 +9,18 @@ char* load_file(char* file)
 	FILE* fd;
 	fd = fopen(file, "r");
 
-	char* line = NULL;
-	size_t len = 0;
-	ssize_t read;
-	
-	// Reading line by line
-	while ((read = getline(&line, &len, fd)) != -1)
-	{
-		sz += len;
+	// Reading character by character
+	char ch;
+	do {
+		ch = fgetc(fd);
+		sz++;
 		char* new_buff = (char*) calloc(sz, sizeof(char));
 		strcpy(new_buff, buff);
-		strcpy(new_buff + strlen(buff), line);
+		new_buff[sz - 1] = ch;
 		free(buff);
 		buff = new_buff;
-	}
+	} while (ch != EOF);  
+
 	fclose(fd);
 	return buff;
 }
