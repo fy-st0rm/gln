@@ -7,7 +7,6 @@ win:
 	$(CC) -Iopengl/include -c $(SRC)
 	ar rcs $(OUT) $(OBJ)
 	erase *.o
-	move $(OUT) bin/
 
 linux:
 	$(CC) -c $(SRC)

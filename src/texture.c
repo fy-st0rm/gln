@@ -25,7 +25,7 @@ void flip_surface(SDL_Surface* surface)
 GLNTexture gln_load_texture(GLNWindow* window, char* file_path)
 {
 	// Loading the texture
-	SDL_Surface* surface = IMG_Load(file_path);
+	SDL_Surface* surface = sdl_check_ptr(IMG_Load(file_path));
 	flip_surface(surface);
 
 	int width = surface->w;

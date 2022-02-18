@@ -1,6 +1,6 @@
 #include "../includes/gln.h"
 
-int main()
+int main(int argc, char** argv)
 {
 	GLNWindow* window = gln_create_window("Window", 800, 600);
 	GLNRenderer* renderer = gln_create_renderer(1000);

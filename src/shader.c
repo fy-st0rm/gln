@@ -3,23 +3,37 @@
 
 char* load_file(char* file)
 {
-	char* buff = calloc(1, sizeof(char));
-	int sz = 0;
 
 	FILE* fd;
 	fd = fopen(file, "r");
+	if (fd == NULL)
+	{
+		fprintf(stderr, "Failed to load file.\n");
+		exit(1);
+	}
 
-	// Reading character by character
+	int sz = 1;
 	char ch;
 	do {
 		ch = fgetc(fd);
 		sz++;
-		char* new_buff = (char*) calloc(sz, sizeof(char));
-		strcpy(new_buff, buff);
-		new_buff[sz - 1] = ch;
-		free(buff);
-		buff = new_buff;
 	} while (ch != EOF);  
+	fclose(fd);
+
+	fd = fopen(file, "r");
+	if (fd == NULL)
+	{
+		fprintf(stderr, "Failed to load file.\n");
+		exit(1);
+	}
+	char* buff = calloc(sz, sizeof(char));
+
+	int i = 0;
+	while ((ch = fgetc(fd)) != EOF)
+	{
+		buff[i++] = ch;
+	}
+	buff[i] = '\0';
 
 	fclose(fd);
 	return buff;
@@ -44,6 +58,9 @@ unsigned int gln_load_shader(char* vertex_shader_file, char* fragment_shader_fil
 
 	GLCall(glDeleteShader(vs));
 	GLCall(glDeleteShader(fs));
+
+	free(vertex_shader);
+	free(fragment_shader);
 
 	return program;
 }
