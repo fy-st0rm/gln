@@ -1,7 +1,5 @@
 #include "../includes/gln.h"
 
-//TODO: FIX THE DICTIONARY AND COMPLETE ANIMATION SYSTEM
-
 int main()
 {
 	GLNWindow* window = gln_create_window("Window", 800, 600);
@@ -42,6 +40,7 @@ int main()
 	dict_insert(anime, (void*)4, (void*)&walk3); 
 	dict_insert(anime, (void*)5, (void*)&walk4); 
 	dict_insert(anime, (void*)6, (void*)&walk5); 
+	dict_print(anime);
 	
 	float curr_frame = 1.0;
 
@@ -78,7 +77,7 @@ int main()
 
 		gln_destroy_quad(quad);
 
-		curr_frame += 0.01;
+		curr_frame += 0.05;
 		if (curr_frame > 7.0) curr_frame = 1.0;
 
 		frame_time = SDL_GetTicks() - frame_start;
