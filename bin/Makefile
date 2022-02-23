@@ -1,5 +1,5 @@
-LIBS_LINUX = -lSDL2main -lSDL2 -lSDL2_image -lGLU -lGL -lGLEW
-LIBS_WIN = -lmingw32 -lSDL2main -lSDL2 -lSDL2_image -lopengl32 -lUser32 -lShell32 -lglew32
+LIBS_LINUX = -lSDL2main -lSDL2 -lSDL2_image -lGLU -lGL -lGLEW -lm
+LIBS_WIN = -lmingw32 -lSDL2main -lSDL2 -lSDL2_image -lopengl32 -lUser32 -lShell32 -lglew32 -lm
 
 win:
 	gcc -I../opengl/include -c test.c

@@ -5,19 +5,6 @@
 
 typedef struct
 {
-	vec2f pos;
-	vec4f color;
-	vec2f tex_cord;
-	float tex_id;
-} Vertex;
-
-typedef struct
-{
-	Vertex v[4];
-} Quad;
-
-typedef struct
-{
 	// Constants
 	int max_quad_cnt;
 	int max_idx_cnt;
@@ -43,7 +30,7 @@ void		 gln_init_renderer		(GLNRenderer* renderer);
 void		 gln_render_begin 		(GLNRenderer* renderer);
 void		 gln_render_end			(GLNRenderer* renderer);
 
-Quad*		 gln_create_quad		(GLNRenderer* renderer, vec4f rect, vec4f color, vec4f tex_cord, int tex_id);
+Quad*		 gln_create_quad		(GLNRenderer* renderer, vec3f pos, vec2f size, vec4f color, vec4f tex_cord, int tex_id);
 void		 gln_destroy_quad		(Quad* quad);
 void		 gln_push_quad			(GLNRenderer* renderer, Quad* quad);
 

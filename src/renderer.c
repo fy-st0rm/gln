@@ -39,7 +39,7 @@ void gln_init_renderer(GLNRenderer* renderer)
 
 	// Generating Vertex attributes
 	GLCall(glEnableVertexAttribArray(0));
-	GLCall(glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, sizeof(Vertex), (const void*) offsetof(Vertex, pos)));
+	GLCall(glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (const void*) offsetof(Vertex, pos)));
 
 	GLCall(glEnableVertexAttribArray(1));
 	GLCall(glVertexAttribPointer(1, 4, GL_FLOAT, GL_FALSE, sizeof(Vertex), (const void*) offsetof(Vertex, color)));
@@ -91,7 +91,7 @@ void gln_render_end(GLNRenderer* renderer)
 	int idx = 0;
 	for (int i = 0; i < 4; i++)
 	{
-		for (int j = 0; j < 9; j++)
+		for (int j = 0; j < 10; j++)
 		{
 			printf("%f ", renderer->quad_buffer[idx]);
 			idx++;
@@ -113,7 +113,7 @@ void gln_render_end(GLNRenderer* renderer)
 	GLCall(glDrawElements(GL_TRIANGLES, renderer->buff_idx, GL_UNSIGNED_INT, NULL));
 }
 
-Quad* gln_create_quad (GLNRenderer* renderer, vec4f rect, vec4f color, vec4f tex_cord, int tex_id)
+Quad* gln_create_quad (GLNRenderer* renderer, vec3f pos, vec2f size, vec4f color, vec4f tex_cord, int tex_id)
 {
 	int id = -1;
 	for (int i = 0; i < renderer->tex_len; i++)
@@ -130,14 +130,21 @@ Quad* gln_create_quad (GLNRenderer* renderer, vec4f rect, vec4f color, vec4f tex
 
 	Quad* quad = malloc(sizeof(Quad));
 	
-	quad->v[0].pos.x = rect.x;
-	quad->v[0].pos.y = rect.y;
-	quad->v[1].pos.x = rect.x + rect.z;
-	quad->v[1].pos.y = rect.y;
-	quad->v[2].pos.x = rect.x + rect.z;
-	quad->v[2].pos.y = rect.y + rect.w;
-	quad->v[3].pos.x = rect.x;
-	quad->v[3].pos.y = rect.y + rect.w;
+	quad->v[0].pos.x = pos.x;
+	quad->v[0].pos.y = pos.y;
+	quad->v[0].pos.z = pos.z;
+
+	quad->v[1].pos.x = pos.x + size.x;
+	quad->v[1].pos.y = pos.y;
+	quad->v[1].pos.z = pos.z;
+
+	quad->v[2].pos.x = pos.x + size.x; 
+	quad->v[2].pos.y = pos.y + size.y; 
+	quad->v[2].pos.z = pos.z;
+	
+	quad->v[3].pos.x = pos.x;
+	quad->v[3].pos.y = pos.y + size.y;
+	quad->v[3].pos.z = pos.z;
 
 	quad->v[0].color = color;
 	quad->v[1].color = color;
@@ -172,6 +179,7 @@ void gln_push_quad(GLNRenderer* renderer, Quad* quad)
 	{
 		renderer->quad_buffer[renderer->buff_idx++] = quad->v[i].pos.x;
 		renderer->quad_buffer[renderer->buff_idx++] = quad->v[i].pos.y;
+		renderer->quad_buffer[renderer->buff_idx++] = quad->v[i].pos.z;
 		renderer->quad_buffer[renderer->buff_idx++] = quad->v[i].color.x;
 		renderer->quad_buffer[renderer->buff_idx++] = quad->v[i].color.y;
 		renderer->quad_buffer[renderer->buff_idx++] = quad->v[i].color.z;
