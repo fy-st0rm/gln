@@ -1,4 +1,5 @@
 #include "../includes/la.h" 
+#include <math.h>
 #include <stdio.h>
 
 void print_mat4f(mat4f m)

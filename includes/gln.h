@@ -6,5 +6,6 @@
 #include "shader.h"
 #include "dict.h"
 #include "texture.h"
+#include "ortho_cam.h"
 
 #endif

@@ -1,7 +1,5 @@
 #include "../includes/gln.h"
 
-//TODO: [ ] Create a camera object
-
 int main(int argc, char** argv)
 {
 	int width = 800, height = 600;
@@ -50,11 +48,7 @@ int main(int argc, char** argv)
 	// Cameras
 	float cam_speed = 0.05f;
 	vec3f cam_pos = { 0.0f, 0.0f, 0.0f };
-	mat4f transform = { 0 };
-	mat4f view_mat = { 0 };
-	mat4f proj_mat = { 0 };
-	mat4f mvp = { 0 };
-	ortho_proj(&proj_mat, 0.0f, width, height, 0.0f, 1000.0f, -1.0f);
+	Ortho_camera* camera = ortho_cam_new(cam_pos, 0.0f, width, height, 0.0f, 1000.0f, -1.0f);
 
 	vec4f bg = { 1.0, 1.0, 0.0, 1.0 };
 	glViewport(0, 0, 800, 600);
@@ -80,31 +74,24 @@ int main(int argc, char** argv)
 				switch (event.key.keysym.sym)
 				{
 					case SDLK_LEFT:
-						cam_pos.x += cam_speed;
+						camera->pos->x += cam_speed;
 						break;
 					case SDLK_RIGHT:
-						cam_pos.x -= cam_speed;
+						camera->pos->x -= cam_speed;
 						break;
 					case SDLK_UP:
-						cam_pos.y -= cam_speed;
+						camera->pos->y -= cam_speed;
 						break;
 					case SDLK_DOWN:
-						cam_pos.y += cam_speed;
+						camera->pos->y += cam_speed;
 						break;
 				}
 			}
 		}
 
 		glUseProgram(shader);
-
-		// Camera stuff
-		mat4f_identity(&transform);
-		mat4f_translate(&transform, cam_pos);
-		mat4f_inverse(&view_mat, transform);
-		mat4f_mat4f_mul(&mvp, proj_mat, view_mat);
-
-		loc = glGetUniformLocation(shader, "mvp");
-		GLCall(glUniformMatrix4fv(loc, 1, GL_FALSE, &mvp.m[0][0]));
+		
+		ortho_cam_update(camera, shader);
 
 		vec4f* tex = dict_get(anime, (int)curr_frame);
 		Quad* quad  = gln_create_quad(renderer, pos, size, color, *tex, texture.id);
