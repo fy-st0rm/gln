@@ -16,6 +16,8 @@
 // Math
 #include "la.h"
 
+#include "util.h"
+
 // Opengl Error handling
 #define ASSERT(x) if (!(x)) exit(1);
 #define GLCall(x) ClearError(); \

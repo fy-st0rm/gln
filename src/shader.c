@@ -1,44 +1,5 @@
 #include "../includes/shader.h"
 
-
-char* load_file(char* file)
-{
-
-	FILE* fd;
-	fd = fopen(file, "r");
-	if (fd == NULL)
-	{
-		fprintf(stderr, "Failed to load file.\n");
-		exit(1);
-	}
-
-	int sz = 1;
-	char ch;
-	do {
-		ch = fgetc(fd);
-		sz++;
-	} while (ch != EOF);  
-	fclose(fd);
-
-	fd = fopen(file, "r");
-	if (fd == NULL)
-	{
-		fprintf(stderr, "Failed to load file.\n");
-		exit(1);
-	}
-	char* buff = calloc(sz, sizeof(char));
-
-	int i = 0;
-	while ((ch = fgetc(fd)) != EOF)
-	{
-		buff[i++] = ch;
-	}
-	buff[i] = '\0';
-
-	fclose(fd);
-	return buff;
-}
-
 unsigned int gln_load_shader(char* vertex_shader_file, char* fragment_shader_file)
 {
 	char* vertex_shader   = load_file(vertex_shader_file);
