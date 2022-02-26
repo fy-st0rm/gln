@@ -22,7 +22,7 @@ typedef struct
 Dict* dict_new(int size);
 void  dict_clean(Dict* dict);
 void  dict_print(Dict* dict);
-void  dict_insert(Dict* dict, void* key, void* value);
+void  dict_insert(Dict* dict, void* key, void* value, size_t v_sz);
 void  dict_pop(Dict* dict, void* key);
 void* dict_get(Dict* dict, void* key);
 

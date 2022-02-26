@@ -24,7 +24,10 @@ typedef struct
 } Quad;
 
 
-void print_mat4f(mat4f m);
+// Print functions
+void print_mat4f(mat4f* m);
+void print_vec3f(vec3f* v);
+void print_vec4f(vec4f* v);
 
 void mat4f_mat4f_mul	(mat4f* out, mat4f m1, mat4f m2);
 void mat4f_identity		(mat4f* out);

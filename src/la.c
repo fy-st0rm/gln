@@ -2,15 +2,25 @@
 #include <math.h>
 #include <stdio.h>
 
-void print_mat4f(mat4f m)
+void print_mat4f(mat4f* m)
 {
 	for (int i = 0; i < 4; i++)
 	{
 		for (int j = 0; j < 4; j++)
-			printf("%f\t", m.m[i][j]);
+			printf("%f\t", m->m[i][j]);
 		printf("\n");
 	}
 	printf("\n");
+}
+
+void print_vec3f(vec3f* v)
+{
+	printf("%f %f %f\n", v->x, v->y, v->z);
+}
+
+void print_vec4f(vec4f* v)
+{
+	printf("%f %f %f %f\n", v->x, v->y, v->z, v->w);
 }
 
 void mat4f_mat4f_mul(mat4f* out, mat4f m1, mat4f m2)

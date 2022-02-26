@@ -25,7 +25,7 @@ void dict_print(Dict* dict)
 	printf("\n");
 }
 
-void dict_insert(Dict* dict, void* key, void* value) 
+void dict_insert(Dict* dict, void* key, void* value, size_t v_sz) 
 {
 	if (dict->len >= dict->size)
 	{
@@ -33,8 +33,9 @@ void dict_insert(Dict* dict, void* key, void* value)
 		exit(1);
 	}
 	dict->items[dict->len] = (Dict_item*) malloc(sizeof(Dict_item));
-	dict->items[dict->len]->key = key;
-	dict->items[dict->len]->value = value;
+	dict->items[dict->len]->key   = key; 
+	dict->items[dict->len]->value = malloc(sizeof(v_sz));
+	memcpy(dict->items[dict->len]->value, value, v_sz);
 	dict->len++;
 }
 
@@ -52,7 +53,6 @@ void dict_pop(Dict* dict, void* key)
 	for(int i = 0; i < prev_size; i++)
 	{
 		Dict_item* item = dict->items[i];
-		printf("%d\n", index);
 		if (key != item->key)
 		{
 			dict->items[index] = item;
