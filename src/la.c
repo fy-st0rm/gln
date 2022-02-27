@@ -50,6 +50,17 @@ void mat4f_identity(mat4f* out)
 	out->m[3][3] = 1.0f;
 }
 
+void mat4f_enlarge(mat4f* out, float scale)
+{
+	for (int i = 0; i < 4; i++)
+		for (int j = 0; j < 4; j++)
+			out->m[i][j] = 0.0f;
+
+	out->m[0][0] = scale;
+	out->m[1][1] = scale;
+	out->m[2][2] = scale;
+}
+
 void mat4f_inverse(mat4f* out, mat4f in)
 {
 	// TEMP ig

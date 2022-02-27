@@ -31,6 +31,7 @@ void print_vec4f(vec4f* v);
 
 void mat4f_mat4f_mul	(mat4f* out, mat4f m1, mat4f m2);
 void mat4f_identity		(mat4f* out);
+void mat4f_enlarge      (mat4f* out, float scale);
 void mat4f_inverse		(mat4f* out, mat4f in);
 void mat4f_translate	(mat4f* out, vec3f v);
 void mat4f_vec3_mul		(vec3f* out, mat4f m, vec3f v);
