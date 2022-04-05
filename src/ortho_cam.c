@@ -32,8 +32,6 @@ void ortho_cam_update(Ortho_camera* camera)
 	// Calculating matrix
 	mat4f_identity(&transform);
 	vec3f pos = *camera->pos;
-   	//pos.x /= camera->width;
-	//pos.y /= camera->height;	
 	mat4f_translate(&transform, pos);
 	mat4f_inverse(&view_mat, transform);
 	mat4f_mat4f_mul(camera->mvp, *camera->proj, view_mat);
