@@ -82,7 +82,7 @@ void gln_render_begin(GLNRenderer* renderer)
 {
 	renderer->buff_idx = 0;
 	free(renderer->quad_buffer);
-	renderer->quad_buffer = malloc(renderer->max_buff_size);
+	renderer->quad_buffer = calloc(renderer->max_quad_cnt, sizeof(Vertex) * 4);
 }
 
 void gln_render_end(GLNRenderer* renderer)
@@ -175,6 +175,12 @@ void gln_destroy_quad(Quad* quad)
 
 void gln_push_quad(GLNRenderer* renderer, Quad* quad)
 {
+	if (renderer->buff_idx >= renderer->max_quad_cnt * 10)
+	{
+		gln_render_end(renderer);
+		gln_render_begin(renderer);
+	}
+
 	for (int i = 0; i < 4; i++)
 	{
 		renderer->quad_buffer[renderer->buff_idx++] = quad->v[i].pos.x;
