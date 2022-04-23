@@ -58,6 +58,7 @@ void list_pop(List* list, int index)
 		fprintf(stderr, "[ERROR]: List index out of range.\n");
 		exit(1);
 	}
+	free(list->items[index]);
 	for (int i = index; i < list->len; i++)
 	{
 		list->items[i] = list->items[i+1];
@@ -81,6 +82,11 @@ Dict* dict_new()
 
 void dict_clean(Dict* dict)
 {
+	for(int i = 0; i < dict->len; i++)
+	{
+		free(dict->items[i]->key);
+		free(dict->items[i]->value);
+	}
 	free(dict->items);
 	free(dict);
 }
