@@ -5,7 +5,6 @@
 
 typedef struct
 {
-	vec3f* origin;
 	vec3f* pos;
 	mat4f* proj;
 	mat4f* mvp;

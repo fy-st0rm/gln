@@ -4,7 +4,15 @@ unsigned int gln_load_shader(char* vertex_shader_file, char* fragment_shader_fil
 {
 	char* vertex_shader   = load_file(vertex_shader_file);
 	char* fragment_shader = load_file(fragment_shader_file);
+	unsigned int shader   = gln_load_shader_from_src(vertex_shader, fragment_shader);
 
+	free(vertex_shader);
+	free(fragment_shader);
+	return shader;
+}
+
+unsigned int gln_load_shader_from_src(char* vertex_shader, char* fragment_shader)
+{
 	unsigned int program = glCreateProgram();
 
 	// Compiling vertex and fragment shader
@@ -19,9 +27,6 @@ unsigned int gln_load_shader(char* vertex_shader_file, char* fragment_shader_fil
 
 	GLCall(glDeleteShader(vs));
 	GLCall(glDeleteShader(fs));
-
-	free(vertex_shader);
-	free(fragment_shader);
 
 	return program;
 }

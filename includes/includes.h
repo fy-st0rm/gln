@@ -7,6 +7,7 @@
 #include <stdbool.h>
 #include <string.h>
 #include <math.h>
+#include <time.h>
 
 // Graphics lib
 #include <GL/glew.h>
