@@ -73,11 +73,7 @@ bool box_collider_intersect(BoxColliderComponentStruct* a, BoxColliderComponentS
 	//TODO: Bug in collision detection
 	vec4f rect_a = a->rect;
 	vec4f rect_b = b->rect;
-	/*
-	if ((rect_a.x < rect_b.x && rect_b.x < rect_a.x + rect_a.z) || (rect_b.x < rect_a.x && rect_a.x < rect_b.x + rect_b.z))
-		if ((rect_a.y < rect_b.y && rect_b.y < rect_a.y + rect_a.w) || (rect_b.y < rect_a.y && rect_a.y < rect_b.y + rect_b.w))
-			return true;
-			*/
+
 	if(rect_a.x < rect_b.x + rect_b.z && rect_a.x + rect_a.z > rect_b.x && 
 			rect_a.y < rect_b.y + rect_b.w && rect_a.y + rect_b.w > rect_b.y)
 		return true;
