@@ -1,14 +1,13 @@
 #include "glnx.h"
-#include <time.h>
 
-#define MASS 2
-#define GRAVITY 14
-#define FRICTION 0.4
+#define MASS 1
+#define GRAVITY 5
+#define FRICTION 0.5
 
 // Movement constant
-#define LEFT -26
-#define RIGHT 26
-#define JUMP -16
+#define LEFT -34
+#define RIGHT 34
+#define JUMP -54
 
 int main(int argc, char** argv)
 {
@@ -34,7 +33,7 @@ int main(int argc, char** argv)
 	entity_add_component(ground, RENDER_COMPONENT, render_component(app->renderer, gcol, cord, tex), sizeof(RenderComponentStruct));
 	entity_add_component(ground, BOX_COLLIDER_COMPONENT, box_collider_component(gpos.x, gpos.y, gsize.x, gsize.y), sizeof(BoxColliderComponentStruct));
 
-	vec3f gpos1 = { -1000.0f, 300.0f, 0.0f };
+	vec3f gpos1 = { -1000.0f, 250.0f, 0.0f };
 	vec4f gcol1 = { 0.5f, 0.5f, 0.1f, 1.0f };
 	Entity* ground1 = entity_new(app->e_manager, gpos1, gsize);
 	entity_add_component(ground1, RENDER_COMPONENT, render_component(app->renderer, gcol1, cord, tex), sizeof(RenderComponentStruct));
@@ -43,6 +42,8 @@ int main(int argc, char** argv)
 	// Movement
 	bool left, right, jump;	
 	left = right = jump = false;
+
+	printf("%s\n", glGetString(GL_VERSION));
 
 	while(app->running)
 	{
@@ -88,16 +89,15 @@ int main(int argc, char** argv)
 			}
 		}
 		if (left)
-		{
 			entity_add_force(box, 'X', LEFT);
-		}
 		if (right)
-		{
 			entity_add_force(box, 'X', RIGHT);
-		}
+
 		if (jump)
 		{
-			entity_add_force(box, 'Y', JUMP);
+			BoxColliderComponentStruct* col = dict_get(box->components, BOX_COLLIDER_COMPONENT, sizeof(char) * strlen(BOX_COLLIDER_COMPONENT));
+			if (col->down_hit)
+				entity_add_force(box, 'Y', JUMP);
 		}
 		
 		vec2f offset = { 1, -1 };

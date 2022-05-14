@@ -64,6 +64,7 @@ BoxColliderComponentStruct* box_collider_component(float x, float y, float w, fl
 	vec4f rect = { x, y, w, h };
 	BoxColliderComponentStruct* component = malloc(sizeof(BoxColliderComponentStruct));
 	component->rect = rect;
+	component->left_hit = component->right_hit = component->up_hit = component->down_hit = false;
 	return component;
 }
 
@@ -91,7 +92,8 @@ PhysicsComponentStruct* physics_component(float mass, float coff_friction, float
 {
 	PhysicsComponentStruct* component = malloc(sizeof(PhysicsComponentStruct));
 	vec3f temp = { 0.0f, 0.0f, 0.0f };
-	component->velocity  = component->force = temp;
+	component->velocity  = component->force = component->net_force = temp;
+	component->f_dir = temp;
 	component->mass = mass;
 	component->coff_friction = coff_friction;
 	component->g = g;

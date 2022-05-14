@@ -53,6 +53,7 @@ vec4f* animation_get_frame(AnimationComponentStruct* animation);
 typedef struct
 {
 	vec4f rect;
+	bool left_hit, right_hit, up_hit, down_hit;
 } BoxColliderComponentStruct;
 
 BoxColliderComponentStruct* box_collider_component(float x, float y, float w, float h);
@@ -68,6 +69,8 @@ typedef struct
 	float mass;
 	vec3f velocity;
 	vec3f force;
+	vec3f net_force;
+	vec3f f_dir;
 	float friction;
 	float coff_friction;
 	float g;

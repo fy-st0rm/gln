@@ -27,8 +27,6 @@ static char* glnx_vertex_shader = "#version 460 core\n"
 "	gl_Position = mvp * in_position;\n"
 "};\n";
 
-
-
 /*
  * Default fragment shader for glnx
  */
@@ -52,10 +50,8 @@ static char* glnx_fragment_shader = "#version 460 core\n"
  * GLNX Core application
  * - Holds window, renderer and shaders
  * - Handles the cameras 
- * - Creates a buffer for entities;
+ * - Includes entity manager system
  */
-
-// TODO: [ ] Add physics system
 
 typedef struct
 {

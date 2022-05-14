@@ -16,9 +16,9 @@ GLNWindow* gln_create_window(const char* title, int w, int h)
 	window->renderer = sdl_check_ptr(SDL_CreateRenderer(window->window, -1, SDL_RENDERER_ACCELERATED));
 
 	// Setting some attributes
-	SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 3);
-	SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 3);
-   	SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, SDL_GL_CONTEXT_PROFILE_CORE);
+	SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 4);
+	SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 4);
+    SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, SDL_GL_CONTEXT_PROFILE_CORE);
 	
 	sdl_check_ptr(SDL_GL_CreateContext(window->window));
 
