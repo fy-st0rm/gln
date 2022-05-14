@@ -12,7 +12,7 @@ linux:
 	mv $(GLNX_OUT) bin/
 
 win:
-	$(CC) -Iopengl/include -c $(GLNX_SRC)
+	$(CC) -Idependency/GLEW/include -Idependency/SDL2/include -c $(GLNX_SRC)
 	ar rcs $(GLNX_OUT) $(OBJ)
 	erase *.o
 
