@@ -44,6 +44,7 @@ AnimationComponentStruct* animation_component(char* def_frame, float speed);
 void animation_add_frame(AnimationComponentStruct* animation, char* frame_name, List* tex_cords);
 void animation_change_frame(AnimationComponentStruct* animation, char* frame);
 vec4f* animation_get_frame(AnimationComponentStruct* animation);
+void animation_set_state(AnimationComponentStruct* animation, char* frame, float speed, bool condition);
 
 /*
  * Box Collider Component
@@ -76,8 +77,9 @@ typedef struct
 	float g;
 
 	bool dynamic;
+	bool apply_gravity;
 } PhysicsComponentStruct;
 
-PhysicsComponentStruct* physics_component(float mass, float coff_friction, float g, bool dynamic);
+PhysicsComponentStruct* physics_component(float mass, float coff_friction, float g, bool dynamic, bool apply_gravity);
 
 #endif

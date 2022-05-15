@@ -23,7 +23,7 @@ typedef struct
  * Entity manager
  */
 
-#define MAX_ENTITY 1000
+#define MAX_ENTITY 10000
 typedef struct
 {
 	Entity* entities[MAX_ENTITY];

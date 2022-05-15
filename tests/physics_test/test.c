@@ -24,7 +24,7 @@ int main(int argc, char** argv)
 	Entity* box = entity_new(app->e_manager, pos, size);
 	entity_add_component(box, RENDER_COMPONENT, render_component(app->renderer, color, cord, tex), sizeof(RenderComponentStruct));
 	entity_add_component(box, BOX_COLLIDER_COMPONENT, box_collider_component(pos.x, pos.y, size.x, size.y), sizeof(BoxColliderComponentStruct));
-	entity_add_component(box, PHYSICS_COMPONENT, physics_component(MASS, FRICTION, GRAVITY, true), sizeof(PhysicsComponentStruct));
+	entity_add_component(box, PHYSICS_COMPONENT, physics_component(MASS, FRICTION, GRAVITY, true, true), sizeof(PhysicsComponentStruct));
 
 	vec3f gpos = { 0.0f, 300.0f, 0.0f };
 	vec2f gsize = { 1000.0f, 50.0f };
